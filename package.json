@@ -1,0 +1,55 @@
+{
+  "name": "mobile-emu-cli",
+  "version": "1.0.0",
+  "description": "CLI tool to list and launch Android Emulators and iOS Simulators easily",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "mobile-emu": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "android",
+    "ios",
+    "emulator",
+    "simulator",
+    "cli",
+    "avd",
+    "xcode",
+    "xcrun",
+    "mobile"
+  ],
+  "author": "Sajudin Maruf",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Udean777/mobile-emu-cli"
+  },
+  "homepage": "https://github.com/Udean777/mobile-emu-cli",
+  "bugs": {
+    "url": "https://github.com/Udean777/mobile-emu-cli/issues"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "os": [
+    "darwin",
+    "linux",
+    "win32"
+  ],
+  "dependencies": {
+    "inquirer": "^13.2.2"
+  },
+  "devDependencies": {
+    "@types/inquirer": "^9.0.9",
+    "@types/node": "^25.2.0",
+    "typescript": "^5.9.3"
+  }
+}
