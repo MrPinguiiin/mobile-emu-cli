@@ -1,4 +1,4 @@
-import inquirer from "inquirer";
+import { select } from "@inquirer/prompts";
 // ============================================================================
 // Platform Display Names
 // ============================================================================
@@ -14,23 +14,19 @@ export class InquirerUI {
      * Shows platform selection menu
      */
     async showPlatformMenu() {
-        const { platform } = await inquirer.prompt([
-            {
-                type: "list",
-                name: "platform",
-                message: "📱 Pilih Platform:",
-                choices: [
-                    {
-                        name: `${PLATFORM_DISPLAY.android.emoji} ${PLATFORM_DISPLAY.android.name}`,
-                        value: "android",
-                    },
-                    {
-                        name: `${PLATFORM_DISPLAY.ios.emoji} ${PLATFORM_DISPLAY.ios.name}`,
-                        value: "ios",
-                    },
-                ],
-            },
-        ]);
+        const platform = await select({
+            message: "📱 Pilih Platform:",
+            choices: [
+                {
+                    name: `${PLATFORM_DISPLAY.android.emoji} ${PLATFORM_DISPLAY.android.name}`,
+                    value: "android",
+                },
+                {
+                    name: `${PLATFORM_DISPLAY.ios.emoji} ${PLATFORM_DISPLAY.ios.name}`,
+                    value: "ios",
+                },
+            ],
+        });
         return platform;
     }
     /**
@@ -43,14 +39,10 @@ export class InquirerUI {
             name: this.formatEmulatorName(emu),
             value: emu,
         }));
-        const { selected } = await inquirer.prompt([
-            {
-                type: "list",
-                name: "selected",
-                message: `${display.emoji} Pilih ${display.name}:`,
-                choices,
-            },
-        ]);
+        const selected = await select({
+            message: `${display.emoji} Pilih ${display.name}:`,
+            choices,
+        });
         return selected;
     }
     /**

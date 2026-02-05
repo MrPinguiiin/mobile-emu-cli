@@ -1,4 +1,4 @@
-import inquirer from "inquirer";
+import { select } from "@inquirer/prompts";
 import type { EmulatorInfo, IUserInterface, Platform } from "../types.js";
 
 // ============================================================================
@@ -19,23 +19,19 @@ export class InquirerUI implements IUserInterface {
    * Shows platform selection menu
    */
   async showPlatformMenu(): Promise<Platform> {
-    const { platform } = await inquirer.prompt<{ platform: Platform }>([
-      {
-        type: "list",
-        name: "platform",
-        message: "📱 Pilih Platform:",
-        choices: [
-          {
-            name: `${PLATFORM_DISPLAY.android.emoji} ${PLATFORM_DISPLAY.android.name}`,
-            value: "android" as Platform,
-          },
-          {
-            name: `${PLATFORM_DISPLAY.ios.emoji} ${PLATFORM_DISPLAY.ios.name}`,
-            value: "ios" as Platform,
-          },
-        ],
-      },
-    ]);
+    const platform = await select<Platform>({
+      message: "📱 Pilih Platform:",
+      choices: [
+        {
+          name: `${PLATFORM_DISPLAY.android.emoji} ${PLATFORM_DISPLAY.android.name}`,
+          value: "android" as Platform,
+        },
+        {
+          name: `${PLATFORM_DISPLAY.ios.emoji} ${PLATFORM_DISPLAY.ios.name}`,
+          value: "ios" as Platform,
+        },
+      ],
+    });
 
     return platform;
   }
@@ -52,14 +48,10 @@ export class InquirerUI implements IUserInterface {
       value: emu,
     }));
 
-    const { selected } = await inquirer.prompt<{ selected: EmulatorInfo }>([
-      {
-        type: "list",
-        name: "selected",
-        message: `${display.emoji} Pilih ${display.name}:`,
-        choices,
-      },
-    ]);
+    const selected = await select<EmulatorInfo>({
+      message: `${display.emoji} Pilih ${display.name}:`,
+      choices,
+    });
 
     return selected;
   }

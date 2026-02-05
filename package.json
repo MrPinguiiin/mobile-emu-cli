@@ -1,6 +1,6 @@
 {
   "name": "mobile-emu-cli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "CLI tool to list and launch Android Emulators and iOS Simulators easily",
   "type": "module",
   "main": "./dist/index.js",
@@ -44,12 +44,11 @@
     "linux",
     "win32"
   ],
-  "dependencies": {
-    "inquirer": "^13.2.2"
-  },
   "devDependencies": {
-    "@types/inquirer": "^9.0.9",
     "@types/node": "^25.2.0",
     "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^8.2.0"
   }
 }

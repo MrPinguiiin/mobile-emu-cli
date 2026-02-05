@@ -70,8 +70,10 @@ export class IOSService implements IEmulatorService {
 
       // Iterate through all device categories (iOS versions)
       for (const [runtime, devices] of Object.entries(data.devices)) {
-        // Only include iOS devices (skip watchOS, tvOS, etc.)
-        if (!runtime.includes("iOS") && !runtime.includes("iPhone")) {
+        // Only include iOS devices (skip watchOS, tvOS, visionOS, etc.)
+        // Runtime format: com.apple.CoreSimulator.SimRuntime.iOS-26-2
+        const isIOSRuntime = runtime.toLowerCase().includes("ios");
+        if (!isIOSRuntime) {
           continue;
         }
 
@@ -82,8 +84,11 @@ export class IOSService implements IEmulatorService {
           }
 
           // Extract iOS version from runtime string
-          const versionMatch = runtime.match(/iOS[- ]?([\d.]+)/);
-          const version = versionMatch?.[1] ?? "";
+          // Format: com.apple.CoreSimulator.SimRuntime.iOS-26-2 -> 26.2
+          const versionMatch = runtime.match(/iOS[.-](\d+)[.-](\d+)/i);
+          const version = versionMatch
+            ? `${versionMatch[1]}.${versionMatch[2]}`
+            : "";
 
           emulators.push({
             id: device.udid,
