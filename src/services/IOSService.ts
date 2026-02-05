@@ -49,7 +49,7 @@ export class IOSService implements IEmulatorService {
 
     if (result.exitCode !== 0) {
       throw new Error(
-        "Xcode Command Line Tools tidak ditemukan. Install dengan: xcode-select --install",
+        "Xcode Command Line Tools not found. Install with: xcode-select --install",
       );
     }
 

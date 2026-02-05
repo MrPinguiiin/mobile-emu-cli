@@ -83,7 +83,7 @@ export class SecureCommandExecutor implements ICommandExecutor {
         sanitizedCommand as (typeof ALLOWED_COMMANDS)[number],
       )
     ) {
-      throw new Error(`Command tidak diizinkan: ${command}`);
+      throw new Error(`Command not allowed: ${command}`);
     }
   }
 
@@ -96,7 +96,7 @@ export class SecureCommandExecutor implements ICommandExecutor {
 
       // Check for shell metacharacters that could be used for injection
       if (/[;&|`$()]/.test(sanitized)) {
-        throw new Error(`Argumen mengandung karakter tidak valid: ${arg}`);
+        throw new Error(`Argument contains invalid characters: ${arg}`);
       }
 
       return sanitized;

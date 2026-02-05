@@ -7,8 +7,8 @@ import { IOSService } from "./IOSService.js";
 // ============================================================================
 
 /**
- * Factory untuk membuat emulator service berdasarkan platform
- * Mengikuti Open/Closed Principle - mudah extend tanpa modify
+ * Factory for creating emulator service based on platform
+ * Follows Open/Closed Principle - easy to extend without modifying
  */
 export class EmulatorServiceFactory {
   private readonly commandExecutor: ICommandExecutor;
@@ -29,7 +29,7 @@ export class EmulatorServiceFactory {
       default:
         // TypeScript exhaustive check
         const _exhaustive: never = platform;
-        throw new Error(`Platform tidak dikenal: ${_exhaustive}`);
+        throw new Error(`Unknown platform: ${_exhaustive}`);
     }
   }
 

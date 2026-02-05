@@ -31,7 +31,7 @@ class App {
 
       if (availablePlatforms.length === 0) {
         this.ui.showError(
-          "Tidak ada platform yang tersedia. Pastikan Android SDK atau Xcode terinstall.",
+          "No platforms available. Make sure Android SDK or Xcode is installed.",
         );
         return;
       }
@@ -42,7 +42,7 @@ class App {
         // If only one platform available, use it directly
         platform = availablePlatforms[0]!;
         this.ui.showMessage(
-          `📱 Menggunakan ${platform === "android" ? "Android" : "iOS"}...`,
+          `📱 Using ${platform === "android" ? "Android" : "iOS"}...`,
         );
       } else {
         // Let user choose
@@ -58,7 +58,7 @@ class App {
       if (emulators.length === 0) {
         const platformName =
           platform === "android" ? "Android Emulator" : "iOS Simulator";
-        this.ui.showError(`Tidak ada ${platformName} yang ditemukan.`);
+        this.ui.showError(`No ${platformName} found.`);
         return;
       }
 
@@ -67,12 +67,12 @@ class App {
 
       // Step 6: Launch
       const platformEmoji = platform === "android" ? "🤖" : "🍎";
-      this.ui.showMessage(`🚀 Menjalankan ${selected.name}...`);
+      this.ui.showMessage(`🚀 Launching ${selected.name}...`);
 
       await service.launch(selected);
 
       this.ui.showMessage(
-        `${platformEmoji} ✅ Berhasil. Terminal ini boleh ditutup.`,
+        `${platformEmoji} ✅ Success. You can close this terminal.`,
       );
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : "Unknown error";

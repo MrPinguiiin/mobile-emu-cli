@@ -20,7 +20,7 @@ export class InquirerUI implements IUserInterface {
    */
   async showPlatformMenu(): Promise<Platform> {
     const platform = await select<Platform>({
-      message: "📱 Pilih Platform:",
+      message: "📱 Select Platform:",
       choices: [
         {
           name: `${PLATFORM_DISPLAY.android.emoji} ${PLATFORM_DISPLAY.android.name}`,
@@ -49,7 +49,7 @@ export class InquirerUI implements IUserInterface {
     }));
 
     const selected = await select<EmulatorInfo>({
-      message: `${display.emoji} Pilih ${display.name}:`,
+      message: `${display.emoji} Select ${display.name}:`,
       choices,
     });
 

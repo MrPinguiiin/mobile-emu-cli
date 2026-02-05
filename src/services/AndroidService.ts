@@ -38,7 +38,7 @@ export class AndroidService implements IEmulatorService {
 
     if (result.exitCode !== 0) {
       throw new Error(
-        "Android SDK tidak ditemukan atau perintah 'emulator' tidak ada di PATH.",
+        "Android SDK not found or 'emulator' command is not in PATH.",
       );
     }
 
@@ -58,7 +58,7 @@ export class AndroidService implements IEmulatorService {
    * Launches the specified Android emulator
    */
   async launch(emulator: EmulatorInfo): Promise<void> {
-    // Menggunakan spawn agar proses terpisah (detached) dari terminal utama
+    // Use spawn to run the process detached from the main terminal
     this.commandExecutor.spawn("emulator", [`@${emulator.id}`]);
   }
 }
