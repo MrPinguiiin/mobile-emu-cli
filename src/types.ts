@@ -18,8 +18,8 @@ export interface EmulatorInfo {
 // ============================================================================
 
 /**
- * Interface untuk mengelola emulator/simulator
- * Diimplementasikan oleh AndroidService dan IOSService
+ * Interface for managing emulator/simulator
+ * Implemented by AndroidService and IOSService
  */
 export interface IEmulatorService {
   readonly platform: Platform;
@@ -29,8 +29,8 @@ export interface IEmulatorService {
 }
 
 /**
- * Interface untuk user interaction
- * Diimplementasikan oleh InquirerUI
+ * Interface for user interaction
+ * Implemented by InquirerUI
  */
 export interface IUserInterface {
   showPlatformMenu(): Promise<Platform>;
@@ -44,7 +44,7 @@ export interface IUserInterface {
 // ============================================================================
 
 /**
- * Result dari command execution
+ * Result from command execution
  */
 export interface CommandResult {
   readonly stdout: string;
@@ -53,8 +53,8 @@ export interface CommandResult {
 }
 
 /**
- * Interface untuk secure command execution
- * Mencegah command injection dengan whitelist dan sanitization
+ * Interface for secure command execution
+ * Prevents command injection with whitelist and sanitization
  */
 export interface ICommandExecutor {
   execute(command: string, args: readonly string[]): Promise<CommandResult>;
@@ -66,7 +66,7 @@ export interface ICommandExecutor {
 // ============================================================================
 
 /**
- * Interface untuk input validation
+ * Interface for input validation
  */
 export interface IValidator {
   isValidDeviceName(name: string): boolean;
