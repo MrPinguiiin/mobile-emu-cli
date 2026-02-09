@@ -1,7 +1,7 @@
 // ============================================================================
 // Platform Types
 // ============================================================================
-export type Platform = "android" | "ios";
+export type Platform = "android" | "ios" | "waydroid";
 
 // ============================================================================
 // Emulator Information
@@ -33,7 +33,7 @@ export interface IEmulatorService {
  * Implemented by InquirerUI
  */
 export interface IUserInterface {
-  showPlatformMenu(): Promise<Platform>;
+  showPlatformMenu(platforms: readonly Platform[]): Promise<Platform>;
   showEmulatorMenu(emulators: EmulatorInfo[]): Promise<EmulatorInfo>;
   showMessage(msg: string): void;
   showError(msg: string): void;

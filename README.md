@@ -5,6 +5,7 @@ CLI tool to list and launch **Android Emulators** and **iOS Simulators** easily 
 ## Features
 
 - 🤖 **Android Emulator** support via Android SDK
+- 🟩 **Waydroid** support on Linux
 - 🍎 **iOS Simulator** support via Xcode (macOS only)
 - 🔒 **Secure** - Command whitelisting and input sanitization
 - 📱 **Interactive** - Beautiful CLI menu interface
@@ -20,8 +21,20 @@ npm install -g mobile-emu-cli
 
 ### For Android Emulators
 
-- Android SDK installed with `emulator` command available in PATH
+- Android SDK installed
 - At least one Android Virtual Device (AVD) created via Android Studio
+
+`mobile-emu` will try these options automatically:
+
+- `ANDROID_HOME` / `ANDROID_SDK_ROOT`
+- Common SDK locations like `~/Android/Sdk`, `/opt/android-sdk`, and `/usr/lib/android-sdk`
+
+If needed, set your SDK path manually:
+
+```bash
+export ANDROID_HOME="$HOME/Android/Sdk"
+export PATH="$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools"
+```
 
 ### For iOS Simulators (macOS only)
 
@@ -34,6 +47,11 @@ To install Xcode Command Line Tools:
 xcode-select --install
 ```
 
+### For Waydroid (Linux only)
+
+- Waydroid installed and initialized
+- `waydroid-container` service running
+
 ## Usage
 
 After installation, simply run:
@@ -44,7 +62,7 @@ mobile-emu
 
 This will:
 
-1. Detect available platforms (Android/iOS)
+1. Detect available platforms (Android/iOS/Waydroid)
 2. Let you select a platform (if both available)
 3. List all available emulators/simulators
 4. Let you select one from an interactive menu
@@ -55,6 +73,7 @@ This will:
 - Node.js 18.0.0 or higher
 - macOS, Linux, or Windows
 - Android SDK (for Android Emulators)
+- Waydroid (for Linux Waydroid runtime)
 - Xcode (for iOS Simulators, macOS only)
 
 ## Security

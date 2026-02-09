@@ -1,4 +1,5 @@
-import { execSync, spawn as nodeSpawn } from "node:child_process";
+import { basename, isAbsolute } from "node:path";
+import { spawn as nodeSpawn, spawnSync } from "node:child_process";
 import type { CommandResult, ICommandExecutor, IValidator } from "../types.js";
 
 // ============================================================================
@@ -10,9 +11,12 @@ import type { CommandResult, ICommandExecutor, IValidator } from "../types.js";
  */
 const ALLOWED_COMMANDS = Object.freeze([
   "emulator", // Android emulator
+  "waydroid", // Waydroid runtime
   "xcrun", // Xcode command-line tools
   "open", // macOS open application
 ] as const);
+
+const ALLOWED_COMMAND_SET = new Set<string>(ALLOWED_COMMANDS);
 
 /**
  * Regex pattern for valid device/emulator names
@@ -78,13 +82,22 @@ export class SecureCommandExecutor implements ICommandExecutor {
   private validateCommand(command: string): void {
     const sanitizedCommand = this.validator.sanitize(command);
 
-    if (
-      !ALLOWED_COMMANDS.includes(
-        sanitizedCommand as (typeof ALLOWED_COMMANDS)[number],
-      )
-    ) {
-      throw new Error(`Command not allowed: ${command}`);
+    if (!sanitizedCommand || /\s/.test(sanitizedCommand)) {
+      throw new Error(`Invalid command: ${command}`);
     }
+
+    if (ALLOWED_COMMAND_SET.has(sanitizedCommand)) {
+      return;
+    }
+
+    if (isAbsolute(sanitizedCommand)) {
+      const commandName = basename(sanitizedCommand);
+      if (ALLOWED_COMMAND_SET.has(commandName)) {
+        return;
+      }
+    }
+
+    throw new Error(`Command not allowed: ${command}`);
   }
 
   /**
@@ -111,20 +124,29 @@ export class SecureCommandExecutor implements ICommandExecutor {
     args: readonly string[],
   ): Promise<CommandResult> {
     this.validateCommand(command);
+    const sanitizedCommand = this.validator.sanitize(command);
     const sanitizedArgs = this.sanitizeArgs(args);
 
     try {
-      // Use execSync with explicit encoding and no shell
-      const stdout = execSync(`${command} ${sanitizedArgs.join(" ")}`, {
+      const result = spawnSync(sanitizedCommand, sanitizedArgs, {
         encoding: "utf-8",
         stdio: ["pipe", "pipe", "pipe"],
-        timeout: 30000, // 30 second timeout
+        timeout: 30000,
+        shell: false,
       });
 
+      if (result.error) {
+        return {
+          stdout: "",
+          stderr: result.error.message,
+          exitCode: 1,
+        };
+      }
+
       return {
-        stdout: stdout.trim(),
-        stderr: "",
-        exitCode: 0,
+        stdout: result.stdout?.toString().trim() ?? "",
+        stderr: result.stderr?.toString().trim() ?? "",
+        exitCode: result.status ?? 1,
       };
     } catch (error: unknown) {
       const execError = error as {
@@ -146,11 +168,13 @@ export class SecureCommandExecutor implements ICommandExecutor {
    */
   spawn(command: string, args: readonly string[]): void {
     this.validateCommand(command);
+    const sanitizedCommand = this.validator.sanitize(command);
     const sanitizedArgs = this.sanitizeArgs(args);
 
-    const process = nodeSpawn(command, sanitizedArgs, {
+    const process = nodeSpawn(sanitizedCommand, sanitizedArgs, {
       detached: true,
       stdio: "ignore",
+      shell: false,
     });
 
     process.unref();

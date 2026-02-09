@@ -8,6 +8,7 @@ import type { EmulatorInfo, IUserInterface, Platform } from "../types.js";
 const PLATFORM_DISPLAY: Record<Platform, { name: string; emoji: string }> = {
   android: { name: "Android Emulator", emoji: "🤖" },
   ios: { name: "iOS Simulator", emoji: "🍎" },
+  waydroid: { name: "Waydroid", emoji: "🟩" },
 };
 
 // ============================================================================
@@ -18,19 +19,15 @@ export class InquirerUI implements IUserInterface {
   /**
    * Shows platform selection menu
    */
-  async showPlatformMenu(): Promise<Platform> {
+  async showPlatformMenu(platforms: readonly Platform[]): Promise<Platform> {
+    const choices = platforms.map((platform) => ({
+      name: `${PLATFORM_DISPLAY[platform].emoji} ${PLATFORM_DISPLAY[platform].name}`,
+      value: platform,
+    }));
+
     const platform = await select<Platform>({
       message: "📱 Select Platform:",
-      choices: [
-        {
-          name: `${PLATFORM_DISPLAY.android.emoji} ${PLATFORM_DISPLAY.android.name}`,
-          value: "android" as Platform,
-        },
-        {
-          name: `${PLATFORM_DISPLAY.ios.emoji} ${PLATFORM_DISPLAY.ios.name}`,
-          value: "ios" as Platform,
-        },
-      ],
+      choices,
     });
 
     return platform;

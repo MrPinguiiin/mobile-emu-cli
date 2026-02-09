@@ -1,6 +1,7 @@
 import type { ICommandExecutor, IEmulatorService, Platform } from "../types.js";
 import { AndroidService } from "./AndroidService.js";
 import { IOSService } from "./IOSService.js";
+import { WaydroidService } from "./WaydroidService.js";
 
 // ============================================================================
 // Emulator Service Factory (Open/Closed Principle)
@@ -26,6 +27,8 @@ export class EmulatorServiceFactory {
         return new AndroidService(this.commandExecutor);
       case "ios":
         return new IOSService(this.commandExecutor);
+      case "waydroid":
+        return new WaydroidService(this.commandExecutor);
       default:
         // TypeScript exhaustive check
         const _exhaustive: never = platform;
@@ -41,10 +44,12 @@ export class EmulatorServiceFactory {
 
     const androidService = new AndroidService(this.commandExecutor);
     const iosService = new IOSService(this.commandExecutor);
+    const waydroidService = new WaydroidService(this.commandExecutor);
 
-    const [androidAvailable, iosAvailable] = await Promise.all([
+    const [androidAvailable, iosAvailable, waydroidAvailable] = await Promise.all([
       androidService.isAvailable(),
       iosService.isAvailable(),
+      waydroidService.isAvailable(),
     ]);
 
     if (androidAvailable) {
@@ -53,6 +58,10 @@ export class EmulatorServiceFactory {
 
     if (iosAvailable) {
       platforms.push("ios");
+    }
+
+    if (waydroidAvailable) {
+      platforms.push("waydroid");
     }
 
     return platforms;
