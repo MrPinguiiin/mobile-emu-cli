@@ -1,6 +1,6 @@
 # mobile-emu-cli
 
-CLI tool to list and launch **Android Emulators** and **iOS Simulators** easily from your terminal.
+CLI tool to list and launch **Android Emulator (AVD)**, **Waydroid** (Linux), and **iOS Simulator** (macOS) from your terminal.
 
 ## Features
 
@@ -13,8 +13,16 @@ CLI tool to list and launch **Android Emulators** and **iOS Simulators** easily 
 
 ## Installation
 
+### npm
+
 ```bash
 npm install -g mobile-emu-cli
+```
+
+### Bun
+
+```bash
+bun install -g mobile-emu-cli
 ```
 
 ## Prerequisites
@@ -52,6 +60,12 @@ xcode-select --install
 - Waydroid installed and initialized
 - `waydroid-container` service running
 
+Quick check:
+
+```bash
+waydroid status
+```
+
 ## Usage
 
 After installation, simply run:
@@ -63,10 +77,16 @@ mobile-emu
 This will:
 
 1. Detect available platforms (Android/iOS/Waydroid)
-2. Let you select a platform (if both available)
+2. Let you select a platform (if more than one is available)
 3. List all available emulators/simulators
 4. Let you select one from an interactive menu
 5. Launch the selected emulator/simulator
+
+## Platform Support
+
+- macOS: Android Emulator + iOS Simulator
+- Linux: Android Emulator + Waydroid
+- Windows: Android Emulator
 
 ## Requirements
 
@@ -82,7 +102,7 @@ This CLI implements security best practices:
 
 - **Command Whitelisting**: Only allowed commands can be executed
 - **Input Sanitization**: All inputs are validated and sanitized
-- **No Shell Execution**: Uses spawn with array arguments to prevent injection
+- **No Shell Execution**: Uses `spawn`/`spawnSync` with argument arrays to prevent injection
 
 ## License
 
